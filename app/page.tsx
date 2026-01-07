@@ -4,6 +4,7 @@ import { count } from "drizzle-orm";
 import { Users } from "@/server/db/schema";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { UserActions } from "@/components/UserActions";
 
 export default async function Home({
   searchParams,
@@ -35,10 +36,15 @@ export default async function Home({
         <div className="flex flex-col gap-2 flex-grow">
           {users?.length > 0 ? (
             users.map(user => (
-              <div key={user.id} className="p-2 border-b last:border-0 border-zinc-100 dark:border-zinc-800">
-                <p className="font-medium">{user.name}</p>
-                <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">{user.hobby}</p>
-                <p className="text-xs text-zinc-500">ID: {user.id}</p>
+              <div key={user.id} className="p-3 border-b last:border-0 border-zinc-100 dark:border-zinc-800">
+                <div className="flex justify-between items-start">
+                  <div className="flex-grow">
+                    <p className="font-medium text-zinc-900 dark:text-zinc-100">{user.name}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">{user.hobby}</p>
+                    <p className="text-[10px] text-zinc-400 mt-1 uppercase">ID: {user.id}</p>
+                  </div>
+                  <UserActions user={user} />
+                </div>
               </div>
             ))
           ) : (

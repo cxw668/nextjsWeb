@@ -41,6 +41,10 @@ export function UserForm() {
         <Label htmlFor="name">Name</Label>
         <Input id="name" name="name" placeholder="please enter your name" required disabled={isPending} />
       </div>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="hobby">Hobby</Label>
+        <Input id="hobby" name="hobby" placeholder="please enter your hobby" required disabled={isPending} />
+      </div>
       <div className="flex gap-2">
         <Button type="reset" variant="outline" className="flex-1" disabled={isPending}>Reset</Button>
         <Button type="submit" className="flex-1" disabled={isPending}>
