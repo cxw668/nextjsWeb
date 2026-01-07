@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from "@/server/db/db";
-import { Users } from "@/server/db/schema";
+import { users } from "@/server/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
@@ -15,7 +15,7 @@ export async function addUser(formData: FormData) {
   const hobby = formData.get("hobby") as string;
 
   try {
-    await db.insert(Users).values({
+    await db.insert(users).values({
       name,
       hobby,
     });
@@ -37,9 +37,9 @@ export async function updateUser(id: number, formData: FormData) {
   }
 
   try {
-    await db.update(Users)
+    await db.update(users)
       .set({ name, hobby })
-      .where(eq(Users.id, id));
+      .where(eq(users.id, id));
 
     revalidatePath("/");
     return { success: true };
@@ -51,7 +51,7 @@ export async function updateUser(id: number, formData: FormData) {
 
 export async function deleteUser(id: number) {
   try {
-    await db.delete(Users).where(eq(Users.id, id));
+    await db.delete(users).where(eq(users.id, id));
     revalidatePath("/");
     return { success: true };
   } catch (error) {
