@@ -10,7 +10,7 @@ import { Edit2, Trash2, X, Check } from "lucide-react";
 
 interface UserActionsProps {
   user: {
-    id: number;
+    id: string;
     name: string | null;
     hobby: string | null;
   };

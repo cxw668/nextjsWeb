@@ -4,7 +4,6 @@ import { SessionProvider as NextAuthSessionProvider, useSession } from "next-aut
 
 export function UserInfo() {
   const session = useSession();
-  console.log(session)
   if (!session) {
     return null;
   }

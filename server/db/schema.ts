@@ -8,7 +8,7 @@ import {
 } from "drizzle-orm/pg-core"
 import type { AdapterAccount } from "next-auth/adapters"
 
-export const users = pgTable("user", {
+export const user = pgTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
@@ -16,14 +16,14 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  hobby: text("hobby"),
 })
  
-export const accounts = pgTable(
+export const account = pgTable(
   "account",
   {
     userId: text("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .notNull(),
     type: text("type").$type<AdapterAccount>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -44,15 +44,14 @@ export const accounts = pgTable(
   ]
 )
  
-export const sessions = pgTable("session", {
+export const session = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
  
-export const verificationTokens = pgTable(
+export const verificationToken = pgTable(
   "verificationToken",
   {
     identifier: text("identifier").notNull(),
@@ -68,13 +67,12 @@ export const verificationTokens = pgTable(
   ]
 )
  
-export const authenticators = pgTable(
+export const authenticator = pgTable(
   "authenticator",
   {
     credentialID: text("credentialID").notNull().unique(),
     userId: text("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .notNull(),
     providerAccountId: text("providerAccountId").notNull(),
     credentialPublicKey: text("credentialPublicKey").notNull(),
     counter: integer("counter").notNull(),
