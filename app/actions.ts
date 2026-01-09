@@ -4,6 +4,7 @@ import { db } from "@/server/db/db";
 import { user } from "@/server/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
+import { userSchema } from "@/lib/validations";
 
 export type ActionResponse<T = any> = {
   success: boolean;
@@ -12,18 +13,22 @@ export type ActionResponse<T = any> = {
 };
 
 export async function addUser(formData: FormData): Promise<ActionResponse> {
-  const name = formData.get("name") as string;
-  const hobby = formData.get("hobby") as string;
+  const rawData = {
+    name: formData.get("name") as string,
+    hobby: formData.get("hobby") as string,
+  };
+
+  const validation = userSchema.safeParse(rawData);
   
-  if (!name || name.trim() === "") {
-    return { success: false, error: "Name is required" };
+  if (!validation.success) {
+    return { 
+      success: false, 
+      error: validation.error.issues.map((e) => e.message).join(", ")
+    };
   }
 
   try {
-    await db.insert(user).values({
-      name,
-      hobby,
-    });
+    await db.insert(user).values(validation.data);
 
     revalidatePath("/");
     return { success: true };
@@ -34,16 +39,23 @@ export async function addUser(formData: FormData): Promise<ActionResponse> {
 }
 
 export async function updateUser(id: string, formData: FormData): Promise<ActionResponse> {
-  const name = formData.get("name") as string;
-  const hobby = formData.get("hobby") as string;
+  const rawData = {
+    name: formData.get("name") as string,
+    hobby: formData.get("hobby") as string,
+  };
 
-  if (!name || name.trim() === "") {
-    return { success: false, error: "Name is required" };
+  const validation = userSchema.safeParse(rawData);
+
+  if (!validation.success) {
+    return { 
+      success: false, 
+      error: validation.error.issues.map((e) => e.message).join(", ")
+    };
   }
 
   try {
     await db.update(user)
-      .set({ name, hobby })
+      .set(validation.data)
       .where(eq(user.id, id));
 
     revalidatePath("/");
