@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 import { SessionProvider } from "@/components/UserInfo";
+import { TRPCProvider } from "@/components/trpc-provider";
 
 export default function RootLayout({
   children,
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        <TRPCProvider>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
+        </TRPCProvider>
         <Toaster />
       </body>
     </html>
