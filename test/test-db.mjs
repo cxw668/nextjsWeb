@@ -1,7 +1,7 @@
 import pg from 'pg';
 
 const client = new pg.Client({
-  connectionString: "postgresql://postgres:123456@localhost:5432/postgres",
+  connectionString: "postgresql://postgres:PASSWORD_POSTGRES@8.134.153.58:5432/postgres",
   ssl: false,
 });
 

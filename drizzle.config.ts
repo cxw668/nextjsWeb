@@ -4,10 +4,10 @@ export default defineConfig({
   dialect: "postgresql",
   schema: "./server/db/schema.ts",
   dbCredentials: {
-    host: 'localhost',
+    host: '8.134.153.58',
     port: 5432,
     user: 'postgres',
-    password: '123456',
+    password: 'PASSWORD_POSTGRES',
     database: 'postgres',
     ssl: false,
   },
