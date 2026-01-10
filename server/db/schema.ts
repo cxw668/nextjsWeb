@@ -88,3 +88,14 @@ export const authenticator = pgTable(
     },
   ]
 )
+
+export const imageUploads = pgTable("image_uploads", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name").notNull(),
+  type: text("type").notNull(),
+  size: integer("size").notNull(),
+  data: text("data").notNull(), // Store as base64
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+})
